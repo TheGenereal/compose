@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  pg:
+    image: postgres:${PG_VERSION:-9.6}
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  webapp:
+    image: jfahrer/demo_web_app:wait_for_pg
+    #ports:
+    #  - 9292:9292
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+    depends_on:
+      - pg
+
+  lb:
+    image: snymanc/lb:latest
+    build:
+      context: ../load_balancer
+    ports:
+      - 80:80
+    environment:
+      - PROXY_UPSTREAM
+    depends_on:
+      - webapp
+
+  alpine:
+    image: alpine:latest
+    stdin_open: true
+    tty: true
+    command: sh
+
+volumes:
+  pg-data:
