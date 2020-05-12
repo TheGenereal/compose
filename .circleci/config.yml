@@ -19,6 +19,7 @@ jobs:
             set -x
             docker -v
             docker-compose -v
+            pwd 
             ls -l
       - run:
           name: Testing the Docker installation
