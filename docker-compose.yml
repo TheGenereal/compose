@@ -12,8 +12,8 @@ services:
 
   webapp:
     image: jfahrer/demo_web_app:wait_for_pg
-    #ports:
-    #  - 9292:9292
+    ports:
+      - 9292:9292
     environment:
       - POSTGRES_DB
       - POSTGRES_USER
@@ -21,23 +21,6 @@ services:
       - POSTGRES_HOST
     depends_on:
       - pg
-
-  lb:
-    image: snymanc/lb:latest
-    build:
-      context: ../load_balancer
-    ports:
-      - 80:80
-    environment:
-      - PROXY_UPSTREAM
-    depends_on:
-      - webapp
-
-  alpine:
-    image: alpine:latest
-    stdin_open: true
-    tty: true
-    command: sh
 
 volumes:
   pg-data:
