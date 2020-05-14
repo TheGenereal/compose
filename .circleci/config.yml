@@ -10,7 +10,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Test my dnd image
+          name: Test my dind image
           command: |
             docker -v
             docker-compose -v
+            curl -4 ifconfig.co
