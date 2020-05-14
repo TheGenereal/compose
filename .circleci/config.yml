@@ -2,7 +2,7 @@
 jobs:
   build:
     docker:
-      - image: docker:19.03.8-git
+      - image: snymanc/dind:with-docker-compose
     working_directory: /app
     environment:
       - COMPOSE_FILE: docker-compose.yml:docker-compose.ci.yml
@@ -10,12 +10,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Installing dependencies
+          name: Test my dnd image
           command: |
-            set -x
-            apk add --no-cache --no-progress bash py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-            pip install --quiet docker-compose
-      - run:
-          name: Check if container works
-          command: |
-            docker-compose up
+            docker -v
+            docker-compose -v
